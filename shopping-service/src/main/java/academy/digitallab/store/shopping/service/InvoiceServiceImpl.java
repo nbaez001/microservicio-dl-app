@@ -23,7 +23,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public List<Invoice> findInvoiceAll() {
-		return invoiceRepository.findAll();
+		List<Invoice> lInvoice = invoiceRepository.findAll();
+		for (Invoice in : lInvoice) {
+			List<InvoiceItem> lInvoiceDet = invoiceItemsRepository.findByInvoiceId(in.getId());
+			in.setItems(lInvoiceDet);
+		}
+		return lInvoice;
 	}
 
 	@Override
@@ -36,7 +41,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		Invoice invoiceReg = invoiceRepository.save(invoice);
 		for (InvoiceItem item : invoice.getItems()) {
-			item.setInvoice(Invoice.builder().id(invoiceReg.getId()).build());
+			item.setInvoiceId(invoiceReg.getId());
 			invoiceItemsRepository.save(item);
 		}
 		return invoice;

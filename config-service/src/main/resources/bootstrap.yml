@@ -9,6 +9,7 @@ spring:
           searchPaths: config-data
           username: nbaez001
           password: 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
+          default-label: master 
   security:
     user:
       name: root
